@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "io.github.5gene"
-version = "1.0"
+version = wings.versions.adapter.get()
 
 android {
     namespace = "sparkj.adapter"
