@@ -1,0 +1,23 @@
+#https://github.com/terrakok/kmp-awesome
+
+[versions]
+gene-adapter = "1.0"
+constraintlayout = "2.2.0-alpha09"
+constraintlayout-compose = "1.1.0-alpha09"
+
+[libraries]
+androidx-constraintlayout-compose = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "constraintlayout-compose" }
+androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayout" }
+
+[bundles]
+
+[plugins]
+
+#需要手动配置 才可以使用
+#dependencyResolutionManagement {
+#    versionCatalogs {
+#        create("wings") {
+#            from(files("gradle/wings.versions.toml"))
+#        }
+#    }
+#}
