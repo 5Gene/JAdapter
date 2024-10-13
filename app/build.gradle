@@ -13,5 +13,6 @@ dependencies {
 //     To use constraintlayout in compose
     implementation libs.androidx.constraintlayout.compose
     implementation vcl.androidx.recyclerview
+    implementation vcl.androidx.swiperefreshlayout
     implementation project(path: ':adapter')
 }
