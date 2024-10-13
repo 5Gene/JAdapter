@@ -15,5 +15,5 @@ android {
 publishMavenCentral("adapter", withSource = true)
 
 dependencies {
-    implementation(vcl.androidx.recyclerview)
+    api(vcl.androidx.recyclerview)
 }
