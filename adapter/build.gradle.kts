@@ -1,18 +1,19 @@
-import wing.publishMavenCentral
+import june.wing.GroupIdMavenCentral
+import june.wing.publishAndroidMavenCentral
 
 plugins {
     id("com.android.library")
     alias(vcl.plugins.gene.android)
 }
 
-group = "io.github.5gene"
+group = GroupIdMavenCentral
 version = libs.versions.gene.adapter.get()
 
 android {
     namespace = "sparkj.adapter"
 }
 
-publishMavenCentral("adapter", withSource = true)
+publishAndroidMavenCentral("adapter")
 
 dependencies {
     api(vcl.androidx.recyclerview)
