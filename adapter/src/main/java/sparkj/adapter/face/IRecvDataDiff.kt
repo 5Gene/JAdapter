@@ -1,32 +1,28 @@
-package sparkj.adapter.face;
+package sparkj.adapter.face
 
-import androidx.annotation.Keep;
+import androidx.annotation.Keep
 
 /**
  * @another 江祖赟
  * @date 2017/7/5.
  */
 @Keep
-public interface IRecvDataDiff extends IRecvData {
-
-
+interface IRecvDataDiff<D : IRecvDataDiff<D>> : IRecvData {
     /**
      * 增删 判断的主要依据
-     * <p>检查id之类</p>
-     * @param oldData
+     *
+     * 检查id之类
      * @param newData
      * @return
      */
-    public boolean areItemsTheSame(IRecvDataDiff oldData, IRecvDataDiff newData);
+    fun areItemsTheSame(newData: D): Boolean = false
 
     /**
      * areItemsTheSame为true才判断 areContentsTheSame
-     * @param oldData
      * @param newData
      * @return
      */
-    public boolean areContentsTheSame(IRecvDataDiff oldData, IRecvDataDiff newData);
+    fun areContentsTheSame(newData: D): Boolean = true
 
-    public Object getChangePayload(IRecvDataDiff oldData, IRecvDataDiff newData);
-
+    fun getChangePayload(newData: D): Any? = null
 }
