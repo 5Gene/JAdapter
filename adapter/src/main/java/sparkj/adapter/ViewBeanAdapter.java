@@ -14,11 +14,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
+import sparkj.adapter.diff.DiffViewBeanCallback;
 import sparkj.adapter.face.OnViewClickListener;
 import sparkj.adapter.helper.CheckHelper;
 import sparkj.adapter.helper.LLog;
-import sparkj.adapter.holder.JViewHolder;
-import sparkj.adapter.vb.JViewBean;
+import sparkj.adapter.holder.ViewHolder;
+import sparkj.adapter.vb.ViewBean;
 
 /**
  * @author yun.
@@ -27,19 +28,19 @@ import sparkj.adapter.vb.JViewBean;
  * @since [https://github.com/mychoices]
  * <p><a href="https://github.com/mychoices">github</a>
  */
-public class JVBrecvAdapter<D extends JViewBean> extends RecyclerView.Adapter<JViewHolder> implements View.OnClickListener {
+public class ViewBeanAdapter<D extends ViewBean> extends RecyclerView.Adapter<ViewHolder> implements View.OnClickListener {
 
     private List<D> mDataList = new ArrayList<>();
 
     private OnViewClickListener<D> mOnViewClickListener;
 
     @Keep
-    public JVBrecvAdapter(List<D> list) {
+    public ViewBeanAdapter(List<D> list) {
         mDataList = list;
     }
 
     @Keep
-    public JVBrecvAdapter(List<D> dataList, OnViewClickListener<D> onViewClickListener) {
+    public ViewBeanAdapter(List<D> dataList, OnViewClickListener<D> onViewClickListener) {
         mDataList = dataList;
         mOnViewClickListener = onViewClickListener;
     }
@@ -57,22 +58,22 @@ public class JVBrecvAdapter<D extends JViewBean> extends RecyclerView.Adapter<JV
 
     @NonNull
     @Override
-    public JViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int itemLayout) {
-        return new JViewHolder(LayoutInflater.from(viewGroup.getContext()).inflate(itemLayout, viewGroup, false));
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int itemLayout) {
+        return new ViewHolder(LayoutInflater.from(viewGroup.getContext()).inflate(itemLayout, viewGroup, false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull JViewHolder jViewHolder, int position) {
-        this.onBindViewHolder(jViewHolder, position, null);
+    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
+        this.onBindViewHolder(viewHolder, position, null);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull JViewHolder holder, int position, @Nullable List<Object> payloads) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position, @Nullable List<Object> payloads) {
         final D d = mDataList.get(position);
-        holder.setHoldVBean(d);
+        holder.setHoldViewBean(d);
         d.setPosition(position);
         if (mOnViewClickListener != null) {
-            JViewHolder.setViewTag(holder.itemView, d);
+            ViewHolder.setViewTag(holder.itemView, d);
             holder.itemView.setOnClickListener(this);
         }
         d.onBindViewHolder(holder, position, payloads, mOnViewClickListener);
@@ -85,27 +86,27 @@ public class JVBrecvAdapter<D extends JViewBean> extends RecyclerView.Adapter<JV
     }
 
     @Override
-    public void onViewAttachedToWindow(@NonNull JViewHolder holder) {
+    public void onViewAttachedToWindow(@NonNull ViewHolder holder) {
         super.onViewAttachedToWindow(holder);
-        JViewBean holdVBean = holder.getHoldVBean();
+        ViewBean holdVBean = holder.getHoldViewBean();
         if (holdVBean != null) {
             holdVBean.onViewAttachedToWindow(holder);
         }
     }
 
     @Override
-    public void onViewDetachedFromWindow(@NonNull JViewHolder holder) {
+    public void onViewDetachedFromWindow(@NonNull ViewHolder holder) {
         super.onViewDetachedFromWindow(holder);
-        JViewBean holdVBean = holder.getHoldVBean();
+        ViewBean holdVBean = holder.getHoldViewBean();
         if (holdVBean != null) {
             holdVBean.onViewDetachedFromWindow(holder);
         }
     }
 
     @Override
-    public void onViewRecycled(@NonNull JViewHolder holder) {
+    public void onViewRecycled(@NonNull ViewHolder holder) {
         super.onViewRecycled(holder);
-        JViewBean holdVBean = holder.getHoldVBean();
+        ViewBean holdVBean = holder.getHoldViewBean();
         if (holdVBean != null) {
             holdVBean.onViewRecycled(holder);
         }
@@ -114,7 +115,7 @@ public class JVBrecvAdapter<D extends JViewBean> extends RecyclerView.Adapter<JV
     @Override
     public void onClick(View v) {
         if (mOnViewClickListener != null) {
-            D d = JViewHolder.getViewTag(v);
+            D d = ViewHolder.getViewTag(v);
             mOnViewClickListener.onItemClicked(v, d);
         }
     }
@@ -137,31 +138,17 @@ public class JVBrecvAdapter<D extends JViewBean> extends RecyclerView.Adapter<JV
     @SuppressLint("NotifyDataSetChanged")
     public void changeAllData(@NonNull List<D> data) {
         if (CheckHelper.checkLists(data)) {
-            DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new DiffUtil.Callback() {
-                @Override
-                public int getOldListSize() {
-                    return mDataList.size();
-                }
-
-                @Override
-                public int getNewListSize() {
-                    return data.size();
-                }
-
-                @Override
-                public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-                    JViewBean oldItem = mDataList.get(oldItemPosition);
-                    JViewBean newItem = data.get(newItemPosition);
-                    return oldItem.areItemsTheSame(newItem);
-                }
-
-                @Override
-                public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-                    JViewBean oldItem = mDataList.get(oldItemPosition);
-                    JViewBean newItem = data.get(newItemPosition);
-                    return oldItem.areContentsTheSame(newItem);
-                }
-            });
+//            new AsyncListDiffer<>(
+//                    new AdapterListUpdateCallback(this),
+//                    new AsyncDifferConfig.Builder<D>(new DiffViewBean<D>()
+//                    ).build()
+//            ).submitList(data, () -> {
+//                mDataList.clear();
+//                mDataList.addAll(data);
+//            });
+            DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(
+                    new DiffViewBeanCallback<D>(mDataList, data)
+            );
             mDataList.clear();
             mDataList.addAll(data);
             diffResult.dispatchUpdatesTo(this);

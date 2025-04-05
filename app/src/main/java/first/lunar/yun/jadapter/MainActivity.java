@@ -7,6 +7,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -17,14 +18,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import sparkj.adapter.JVBrecvAdapter;
 import sparkj.adapter.LApp;
 import sparkj.adapter.LoadMoreWrapperAdapter;
-import sparkj.adapter.face.JOnClickListener;
+import sparkj.adapter.ViewBeanAdapter;
+import sparkj.adapter.custom.MediaSelectViewModel;
 import sparkj.adapter.face.OnMoreloadListener;
+import sparkj.adapter.face.OnViewBeanClickListener;
 import sparkj.adapter.face.OnViewClickListener;
-import sparkj.adapter.holder.JViewHolder;
-import sparkj.adapter.vb.JViewBean;
+import sparkj.adapter.holder.ViewHolder;
+import sparkj.adapter.vb.ViewBean;
 import sparkj.jadapter.R;
 
 public class MainActivity extends AppCompatActivity implements OnViewClickListener<DataTest>, OnMoreloadListener, SwipeRefreshLayout.OnRefreshListener {
@@ -37,18 +39,24 @@ public class MainActivity extends AppCompatActivity implements OnViewClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        MediaSelectViewModel mediaSelectViewModel = new ViewModelProvider(this).get(MediaSelectViewModel.class);
+//        mediaSelectViewModel.forActivityResult(this::registerForActivityResult);
+        mediaSelectViewModel.registerForActivityResult(this::registerForActivityResult);
+
+
         LApp.setDebug(true);
-        List<JViewBean> dataTests = new ArrayList<>();
+        List<ViewBean> dataTests = new ArrayList<>();
         for (int i = 0; i < 20; i++) {
             dataTests.add(new DataTest());
         }
-//        dataTests.set(3, new MediaVb());
+        dataTests.set(3, new MediaVb());
 
         mRecyclerView = findViewById(R.id.rcv);
         mRefreshLayout = findViewById(R.id.refresh);
         mRefreshLayout.setOnRefreshListener(this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mAdapter = new LoadMoreWrapperAdapter(new JVBrecvAdapter(dataTests, this), dataTests);
+        mAdapter = new LoadMoreWrapperAdapter(new ViewBeanAdapter(dataTests, this), dataTests);
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.enAbleLoadMore(true);
         mAdapter.setOnMoreloadListener(this);
@@ -91,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements OnViewClickListen
         mRecyclerView.postDelayed(new Runnable() {
             @Override
             public void run() {
-                List<JViewBean> dataTests = new ArrayList<>();
+                List<ViewBean> dataTests = new ArrayList<>();
                 dataTests.add(new TestVb2());
                 for (int i = 0; i < 20; i++) {
                     dataTests.add(new DataTest());
@@ -104,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements OnViewClickListen
     }
 }
 
-class DataTest extends JViewBean {
+class DataTest extends ViewBean {
 
     String text = "测试:" + String.valueOf(new Random().nextInt());
 
@@ -114,9 +122,9 @@ class DataTest extends JViewBean {
     }
 
     @Override
-    public void onBindViewHolder(JViewHolder holder, final int position, @Nullable List<Object> payloads, OnViewClickListener viewClickListener) {
+    public void onBindViewHolder(ViewHolder holder, final int position, @Nullable List<Object> payloads, OnViewClickListener viewClickListener) {
         holder.setText(R.id.tv, position + "    " + text)
-                .setOnClickListener(new JOnClickListener() {
+                .setOnClickListener(new OnViewBeanClickListener() {
                     @Override
                     public void throttleFirstclick(View v) {
                         Toast.makeText(v.getContext(), getPosition() + "", Toast.LENGTH_SHORT).show();
@@ -125,19 +133,19 @@ class DataTest extends JViewBean {
     }
 
     @Override
-    public void onViewDetachedFromWindow(@NonNull JViewHolder holder) {
+    public void onViewDetachedFromWindow(@NonNull ViewHolder holder) {
         super.onViewDetachedFromWindow(holder);
         System.out.println("onViewDetachedFromWindow - " + getPosition() + " - " + holder);
     }
 
     @Override
-    public void onViewRecycled(@NonNull @NotNull JViewHolder holder) {
+    public void onViewRecycled(@NonNull @NotNull ViewHolder holder) {
         super.onViewRecycled(holder);
         System.out.println("onViewRecycled - " + getPosition() + " - " + holder);
     }
 
     @Override
-    public void onViewAttachedToWindow(@NonNull @NotNull JViewHolder holder) {
+    public void onViewAttachedToWindow(@NonNull @NotNull ViewHolder holder) {
         super.onViewAttachedToWindow(holder);
         System.out.println("onViewAttachedToWindow - " + getPosition() + " - " + holder);
     }

@@ -1,10 +1,12 @@
 package sparkj.adapter;
 
 import android.widget.LinearLayout;
+
 import androidx.recyclerview.widget.RecyclerView;
-import sparkj.adapter.helper.Damping;
 
 import java.util.List;
+
+import sparkj.adapter.helper.Damping;
 
 
 /**
@@ -14,7 +16,7 @@ public class LoadMoreWrapperDampAdapter<T> extends LoadMoreWrapperAdapter<T> {
 
     public boolean mIsNeedDamp = true;
 
-    public LoadMoreWrapperDampAdapter(JVBrecvAdapter innerAdapter) {
+    public LoadMoreWrapperDampAdapter(ViewBeanAdapter innerAdapter) {
         super(innerAdapter);
     }
 

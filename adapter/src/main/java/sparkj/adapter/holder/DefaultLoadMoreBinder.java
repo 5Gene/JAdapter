@@ -1,17 +1,19 @@
 package sparkj.adapter.holder;
 
+import static sparkj.adapter.LApp.findString;
+
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import sparkj.adapter.LConsistent;
-import sparkj.adapter.R;
-import sparkj.adapter.face.JOnClickListener;
-import sparkj.adapter.face.OnViewClickListener;
 
-import static sparkj.adapter.LApp.findString;
+import sparkj.adapter.R;
+import sparkj.adapter.Tag;
+import sparkj.adapter.face.OnViewBeanClickListener;
+import sparkj.adapter.face.OnViewClickListener;
 
 /**
  * @another 江祖赟
@@ -19,7 +21,7 @@ import static sparkj.adapter.LApp.findString;
  */
 public class DefaultLoadMoreBinder extends BaseLoadMoreBinder<BaseLoadMoreBinder.LoadMoreState> {
 
-  public JViewHolder mLoadMoreHolder;
+  public ViewHolder mLoadMoreHolder;
   private OnViewClickListener mViewClickListener;
   private CharSequence mNomoreLoadTipsIfneed = "=== 我是有底线的 ===";
 
@@ -39,7 +41,7 @@ public class DefaultLoadMoreBinder extends BaseLoadMoreBinder<BaseLoadMoreBinder
   }
 
   public void onLoadErrorClick(@NonNull Object item) {
-    if (FOOT_STATE_LOAD_ERROR.equals(mRootView.getTag(LConsistent.ViewTag.view_tag5))) {
+    if (FOOT_STATE_LOAD_ERROR.equals(mRootView.getTag(Tag.view_tag5))) {
       mViewClickListener.onItemClicked(mRootView, item);
       //加载错误状态==点击===转为 加载状态！
       onLoadMoreState("");
@@ -51,11 +53,11 @@ public class DefaultLoadMoreBinder extends BaseLoadMoreBinder<BaseLoadMoreBinder
 
   @NonNull
   @Override
-  public JViewHolder onCreateViewHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
-    mLoadMoreHolder = new JViewHolder(
+  public ViewHolder onCreateViewHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
+    mLoadMoreHolder = new ViewHolder(
         mRootView = inflater.inflate(R.layout.default_recyc_loading_more, parent, false));
     rootViewLoadingTag(FOOT_STATE_LOAD_NOMORE);//holder处于 loadmore状态
-    mLoadMoreHolder.itemView.setOnClickListener(new JOnClickListener() {
+    mLoadMoreHolder.itemView.setOnClickListener(new OnViewBeanClickListener() {
       @Override
       protected void throttleFirstclick(View v) {
         onLoadErrorClick(mLoadMoreHolder);
@@ -68,11 +70,11 @@ public class DefaultLoadMoreBinder extends BaseLoadMoreBinder<BaseLoadMoreBinder
    * 设置holder的当前状态 主要 用于 状态切换的时候 防止被多次设置同一个状态，没必要
    */
   public void rootViewLoadingTag(String tag) {
-    mRootView.setTag(LConsistent.ViewTag.view_tag5, tag);
+    mRootView.setTag(Tag.view_tag5, tag);
   }
 
   public boolean checkRootViewLoadingTag(String tag) {
-    return tag.equals(mRootView.getTag(LConsistent.ViewTag.view_tag5));
+    return tag.equals(mRootView.getTag(Tag.view_tag5));
   }
 
   /**

@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import sparkj.adapter.face.IRecvDataDiff;
-import sparkj.adapter.holder.JViewHolder;
+import sparkj.adapter.holder.ViewHolder;
 
 /**
  * @author yun.
@@ -18,7 +18,7 @@ import sparkj.adapter.holder.JViewHolder;
  * <p><a href="https://github.com/mychoices">github</a>
  */
 @Keep
-public abstract class JViewBean implements IRecvDataDiff<JViewBean> {
+public abstract class ViewBean implements IRecvDataDiff<ViewBean> {
 
     private int mPosition;
 
@@ -34,31 +34,31 @@ public abstract class JViewBean implements IRecvDataDiff<JViewBean> {
     public abstract int bindLayout();
 
     @Override
-    public void onViewDetachedFromWindow(@NonNull JViewHolder holder) {
+    public void onViewDetachedFromWindow(@NonNull ViewHolder holder) {
 
     }
 
     @Override
-    public void onViewAttachedToWindow(@NonNull JViewHolder holder) {
+    public void onViewAttachedToWindow(@NonNull ViewHolder holder) {
 
     }
 
-    public void onViewRecycled(@NonNull JViewHolder holder) {
+    public void onViewRecycled(@NonNull ViewHolder holder) {
 
     }
 
     @Override
-    public boolean areItemsTheSame(@NotNull JViewBean newData) {
+    public boolean areItemsTheSame(@NotNull ViewBean newData) {
         return false;
     }
 
     @Override
-    public boolean areContentsTheSame(@NotNull JViewBean newData) {
+    public boolean areContentsTheSame(@NotNull ViewBean newData) {
         return true;
     }
 
     @Override
-    public @Nullable Object getChangePayload(@NotNull JViewBean newData) {
+    public @Nullable Object getChangePayload(@NotNull ViewBean newData) {
         return null;
     }
 }

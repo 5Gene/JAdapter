@@ -10,8 +10,10 @@ import android.util.Size
 import android.view.View
 import android.view.ViewOutlineProvider
 import android.widget.ImageView
+import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts.PickMultipleVisualMedia
 import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia
 import androidx.appcompat.app.AppCompatActivity
@@ -20,13 +22,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import sparkj.adapter.JVBrecvAdapter
 import sparkj.adapter.R
+import sparkj.adapter.ViewBeanAdapter
 import sparkj.adapter.face.OnViewClickListener
-import sparkj.adapter.holder.JViewHolder
-import sparkj.adapter.vb.JViewBean
+import sparkj.adapter.holder.ViewHolder
+import sparkj.adapter.vb.ViewBean
 
-class MediaItem(val uri: Uri? = null) : JViewBean() {
+class MediaItem(val uri: Uri? = null) : ViewBean() {
 
     override fun hashCode(): Int {
         return 0
@@ -40,7 +42,7 @@ class MediaItem(val uri: Uri? = null) : JViewBean() {
         override fun getOutline(view: View, outline: Outline) {
             outline.setRoundRect(
                 0, 0, view.width,
-                view.height, view.height / 5f
+                view.height, view.height / 6f
             )
         }
     }
@@ -48,7 +50,7 @@ class MediaItem(val uri: Uri? = null) : JViewBean() {
     override fun bindLayout() = R.layout.item_adapter_media
 
     override fun onBindViewHolder(
-        holder: JViewHolder,
+        holder: ViewHolder,
         position: Int,
         payloads: List<Any?>?,
         viewClickListener: OnViewClickListener<*>?
@@ -71,15 +73,38 @@ class MediaItem(val uri: Uri? = null) : JViewBean() {
         }
     }
 
-    override fun areItemsTheSame(newData: JViewBean): Boolean {
+    override fun areItemsTheSame(newData: ViewBean): Boolean {
         return uri == (newData as MediaItem).uri
     }
 }
+
 
 class MediaSelectViewModel : ViewModel() {
 
     var maxCount = 5
     val mediasData = MutableLiveData<List<MediaItem>>(listOf(MediaItem()))
+    private var pickMedia: ActivityResultLauncher<PickVisualMediaRequest>? = null
+
+    fun registerForActivityResult(
+        activityResultRegister: (
+            ActivityResultContract<PickVisualMediaRequest, List<@JvmSuppressWildcards Uri>>, ActivityResultCallback<List<@JvmSuppressWildcards Uri>>
+        ) -> ActivityResultLauncher<PickVisualMediaRequest>
+    ) {
+        pickMedia = activityResultRegister(PickMultipleVisualMedia(maxCount)) { uris ->
+            // Callback is invoked after the user selects a media item or closes the
+            // photo picker.
+            if (uris.isNotEmpty()) {
+                Log.d("PhotoPicker", "Selected Uris: $uris")
+                addAll(uris.map { MediaItem(it) })
+            } else {
+                Log.d("PhotoPicker", "No media selected")
+            }
+        }
+    }
+
+    fun launch() {
+        pickMedia!!.launch(PickVisualMediaRequest(PickVisualMedia.ImageAndVideo))
+    }
 
     fun remove(mediaItem: MediaItem) {
         val mediaDatas = mediasData.value!!.toMutableList()
@@ -110,10 +135,8 @@ class MediaSelectLayout @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
 ) : RecyclerView(context, attrs), OnViewClickListener<MediaItem> {
 
-    var mediaMaxCount = 5
-    private var pickMedia: ActivityResultLauncher<PickVisualMediaRequest>
-    private var jadapter: JVBrecvAdapter<MediaItem>
-    private val mediaSelectViewModel:MediaSelectViewModel
+    private var jadapter: ViewBeanAdapter<MediaItem>
+    private val mediaSelectViewModel: MediaSelectViewModel
 
 
     init {
@@ -121,26 +144,16 @@ class MediaSelectLayout @JvmOverloads constructor(
         val activity = context as AppCompatActivity
         mediaSelectViewModel = ViewModelProvider(activity)[MediaSelectViewModel::class.java]
         layoutManager = LinearLayoutManager(context, HORIZONTAL, false)
-        jadapter = JVBrecvAdapter<MediaItem>(mutableListOf(), this)
+        jadapter = ViewBeanAdapter<MediaItem>(mutableListOf(), this)
         mediaSelectViewModel.mediasData.observe(activity) {
             jadapter.refreshAllData(it)
         }
         adapter = jadapter
-        pickMedia = activity.registerForActivityResult(PickMultipleVisualMedia(mediaMaxCount)) { uris ->
-            // Callback is invoked after the user selects a media item or closes the
-            // photo picker.
-            if (uris.isNotEmpty()) {
-                Log.d("PhotoPicker", "Selected URI: $uris")
-                mediaSelectViewModel.addAll(uris.map { MediaItem(it) })
-            } else {
-                Log.d("PhotoPicker", "No media selected")
-            }
-        }
     }
 
     override fun onItemClicked(view: View?, itemData: MediaItem) {
         if (itemData.uri == null) {
-            pickMedia.launch(PickVisualMediaRequest(PickVisualMedia.ImageAndVideo))
+            mediaSelectViewModel.launch()
         } else {
             mediaSelectViewModel.remove(itemData)
         }

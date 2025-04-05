@@ -2,8 +2,6 @@ package sparkj.adapter.helper;
 
 import android.text.TextUtils;
 import android.util.Log;
-import sparkj.adapter.LApp;
-import sparkj.adapter.LConsistent;
 
 /**
  * @author yun.
@@ -14,8 +12,6 @@ import sparkj.adapter.LConsistent;
  */
 public class LLog {
   public static void llog(CharSequence... msgs) {
-    if (LApp.isDebug()) {
-        Log.d("JAdapter", TextUtils.join(LConsistent.SPLIT_DOS, msgs));
-    }
+      Log.d("JAdapter", TextUtils.join(",", msgs));
   }
 }

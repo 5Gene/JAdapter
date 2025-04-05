@@ -1,8 +1,10 @@
 package sparkj.adapter.face;
 
 import android.view.View;
+
 import androidx.annotation.Keep;
-import sparkj.adapter.LConsistent;
+
+import sparkj.adapter.Tag;
 
 /**
  * @author yun.
@@ -12,25 +14,25 @@ import sparkj.adapter.LConsistent;
  * <p><a href="https://github.com/mychoices">github</a>
  */
 @Keep
-public abstract class JOnClickListener implements View.OnClickListener {
+public abstract class OnViewBeanClickListener implements View.OnClickListener {
 
   private static final int SHAKE_TIME = 500;
   private int mShakeTime = SHAKE_TIME;
 
-  public JOnClickListener(int shakeTime) {
+  public OnViewBeanClickListener(int shakeTime) {
     mShakeTime = shakeTime;
   }
 
-  public JOnClickListener() {
+  public OnViewBeanClickListener() {
   }
 
   @Override
   public void onClick(View v) {
-    Object tag = v.getTag(LConsistent.ViewTag.view_click);
+    Object tag = v.getTag(Tag.view_click);
     if (tag != null && (System.currentTimeMillis() - ((Long) tag) < mShakeTime)) {
       return;
     }
-    v.setTag(LConsistent.ViewTag.view_click, System.currentTimeMillis());
+    v.setTag(Tag.view_click, System.currentTimeMillis());
     throttleFirstclick(v);
   }
 

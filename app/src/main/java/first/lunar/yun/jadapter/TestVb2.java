@@ -2,14 +2,16 @@ package first.lunar.yun.jadapter;
 
 import android.view.View;
 import android.widget.Toast;
+
 import androidx.annotation.Nullable;
-import sparkj.adapter.face.JOnClickListener;
-import sparkj.adapter.face.OnViewClickListener;
-import sparkj.adapter.holder.JViewHolder;
-import sparkj.adapter.vb.JViewBean;
-import sparkj.jadapter.R;
 
 import java.util.List;
+
+import sparkj.adapter.face.OnViewBeanClickListener;
+import sparkj.adapter.face.OnViewClickListener;
+import sparkj.adapter.holder.ViewHolder;
+import sparkj.adapter.vb.ViewBean;
+import sparkj.jadapter.R;
 
 /**
  * @author yun.
@@ -18,7 +20,7 @@ import java.util.List;
  * @since [https://github.com/mychoices]
  * <p><a href="https://github.com/mychoices">github</a>
  */
-public class TestVb2 extends JViewBean {
+public class TestVb2 extends ViewBean {
   private String text = "TestVb2";
 
   @Override
@@ -27,9 +29,9 @@ public class TestVb2 extends JViewBean {
   }
 
   @Override
-  public void onBindViewHolder(JViewHolder holder, final int position, @Nullable List<Object> payloads, OnViewClickListener viewClickListener) {
+  public void onBindViewHolder(ViewHolder holder, final int position, @Nullable List<Object> payloads, OnViewClickListener viewClickListener) {
     holder.setText(R.id.tv, position + "    " + text)
-        .setOnClickListener(new JOnClickListener() {
+        .setOnClickListener(new OnViewBeanClickListener() {
           @Override
           public void throttleFirstclick(View v) {
             Toast.makeText(v.getContext(), getPosition() + "", Toast.LENGTH_SHORT).show();

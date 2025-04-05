@@ -8,6 +8,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.view.View;
 import android.widget.Toast;
+
 import androidx.annotation.Keep;
 
 /**
@@ -20,7 +21,7 @@ import androidx.annotation.Keep;
 public class LApp {
   private static Context sContext;
   private static final Handler sHandle;
-  private static boolean sIsDebug = false;
+  private static boolean sIsDebug = true;
 
   static {
     sHandle = new Handler(Looper.getMainLooper()) {

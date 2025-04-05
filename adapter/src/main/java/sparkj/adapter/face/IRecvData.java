@@ -3,9 +3,10 @@ package sparkj.adapter.face;
 import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import sparkj.adapter.holder.JViewHolder;
 
 import java.util.List;
+
+import sparkj.adapter.holder.ViewHolder;
 
 /**
  * @another 江祖赟
@@ -14,9 +15,9 @@ import java.util.List;
 @Keep
 public interface IRecvData {
 
-  void onViewDetachedFromWindow(@NonNull JViewHolder holder);
+  void onViewDetachedFromWindow(@NonNull ViewHolder holder);
 
-  void onViewAttachedToWindow(@NonNull JViewHolder holder);
+  void onViewAttachedToWindow(@NonNull ViewHolder holder);
 
-  void onBindViewHolder(JViewHolder holder, int position, @Nullable List<Object> payloads, @Nullable OnViewClickListener viewClickListener);
+  void onBindViewHolder(ViewHolder holder, int position, @Nullable List<Object> payloads, @Nullable OnViewClickListener viewClickListener);
 }
