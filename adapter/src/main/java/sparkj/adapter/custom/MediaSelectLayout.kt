@@ -90,6 +90,7 @@ class MediaSelectViewModel : ViewModel() {
             ActivityResultContract<PickVisualMediaRequest, List<@JvmSuppressWildcards Uri>>, ActivityResultCallback<List<@JvmSuppressWildcards Uri>>
         ) -> ActivityResultLauncher<PickVisualMediaRequest>
     ) {
+        pickMedia?.unregister()
         pickMedia = activityResultRegister(PickMultipleVisualMedia(maxCount)) { uris ->
             // Callback is invoked after the user selects a media item or closes the
             // photo picker.
@@ -127,6 +128,11 @@ class MediaSelectViewModel : ViewModel() {
             val medias = newMedias.toMutableList()
             mediasData.postValue(medias.subList(0, maxCount))
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        pickMedia?.unregister()
     }
 }
 
