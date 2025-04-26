@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
@@ -18,7 +19,7 @@ import sparkj.adapter.diff.DiffViewBeanCallback;
 import sparkj.adapter.face.OnViewClickListener;
 import sparkj.adapter.helper.CheckHelper;
 import sparkj.adapter.helper.LLog;
-import sparkj.adapter.holder.ViewHolder;
+import sparkj.adapter.holder.ViewBeanHolder;
 import sparkj.adapter.vb.ViewBean;
 
 /**
@@ -28,7 +29,7 @@ import sparkj.adapter.vb.ViewBean;
  * @since [https://github.com/mychoices]
  * <p><a href="https://github.com/mychoices">github</a>
  */
-public class ViewBeanAdapter<D extends ViewBean> extends RecyclerView.Adapter<ViewHolder> implements View.OnClickListener {
+public class ViewBeanAdapter<D extends ViewBean> extends RecyclerView.Adapter<ViewBeanHolder> implements View.OnClickListener {
 
     private List<D> mDataList = new ArrayList<>();
 
@@ -55,25 +56,36 @@ public class ViewBeanAdapter<D extends ViewBean> extends RecyclerView.Adapter<Vi
         return mDataList.get(position).bindLayout();
     }
 
-
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int itemLayout) {
-        return new ViewHolder(LayoutInflater.from(viewGroup.getContext()).inflate(itemLayout, viewGroup, false));
+    public ViewBeanHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int itemLayout) {
+        //资源ID的结构（32位）是：
+        //bits | 意义
+        //24-31 | package id（一般是 0x7f）
+        //16-23 | type id（资源类型，比如 layout, drawable, string）
+        //0-15 | entry id（资源的具体项编号）
+        if (CheckHelper.isLayoutId(itemLayout)) {
+            return new ViewBeanHolder(LayoutInflater.from(viewGroup.getContext()).inflate(itemLayout, viewGroup, false));
+        } else {
+            LinearLayout linearLayout = new LinearLayout(viewGroup.getContext());
+            linearLayout.setId(View.generateViewId());
+            linearLayout.setLayoutParams(new ViewGroup.LayoutParams(-1, -2));
+            return new ViewBeanHolder(linearLayout);
+        }
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
-        this.onBindViewHolder(viewHolder, position, null);
+    public void onBindViewHolder(@NonNull ViewBeanHolder viewBeanHolder, int position) {
+        this.onBindViewHolder(viewBeanHolder, position, null);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position, @Nullable List<Object> payloads) {
+    public void onBindViewHolder(@NonNull ViewBeanHolder holder, int position, @Nullable List<Object> payloads) {
         final D d = mDataList.get(position);
         holder.setHoldViewBean(d);
         d.setPosition(position);
         if (mOnViewClickListener != null) {
-            ViewHolder.setViewTag(holder.itemView, d);
+            ViewBeanHolder.setViewTag(holder.itemView, d);
             holder.itemView.setOnClickListener(this);
         }
         d.onBindViewHolder(holder, position, payloads, mOnViewClickListener);
@@ -86,7 +98,7 @@ public class ViewBeanAdapter<D extends ViewBean> extends RecyclerView.Adapter<Vi
     }
 
     @Override
-    public void onViewAttachedToWindow(@NonNull ViewHolder holder) {
+    public void onViewAttachedToWindow(@NonNull ViewBeanHolder holder) {
         super.onViewAttachedToWindow(holder);
         ViewBean holdVBean = holder.getHoldViewBean();
         if (holdVBean != null) {
@@ -95,7 +107,7 @@ public class ViewBeanAdapter<D extends ViewBean> extends RecyclerView.Adapter<Vi
     }
 
     @Override
-    public void onViewDetachedFromWindow(@NonNull ViewHolder holder) {
+    public void onViewDetachedFromWindow(@NonNull ViewBeanHolder holder) {
         super.onViewDetachedFromWindow(holder);
         ViewBean holdVBean = holder.getHoldViewBean();
         if (holdVBean != null) {
@@ -104,7 +116,7 @@ public class ViewBeanAdapter<D extends ViewBean> extends RecyclerView.Adapter<Vi
     }
 
     @Override
-    public void onViewRecycled(@NonNull ViewHolder holder) {
+    public void onViewRecycled(@NonNull ViewBeanHolder holder) {
         super.onViewRecycled(holder);
         ViewBean holdVBean = holder.getHoldViewBean();
         if (holdVBean != null) {
@@ -115,7 +127,7 @@ public class ViewBeanAdapter<D extends ViewBean> extends RecyclerView.Adapter<Vi
     @Override
     public void onClick(View v) {
         if (mOnViewClickListener != null) {
-            D d = ViewHolder.getViewTag(v);
+            D d = ViewBeanHolder.getViewTag(v);
             mOnViewClickListener.onItemClicked(v, d);
         }
     }
@@ -123,9 +135,9 @@ public class ViewBeanAdapter<D extends ViewBean> extends RecyclerView.Adapter<Vi
     @Keep
     public void addMoreList(@NonNull List<D> data) {
         if (CheckHelper.checkLists(data)) {
-            int startposition = mDataList.size();
+            int startPosition = mDataList.size();
             mDataList.addAll(data);
-            notifyItemRangeInserted(startposition, data.size());
+            notifyItemRangeInserted(startPosition, data.size());
         }
     }
 
@@ -171,7 +183,6 @@ public class ViewBeanAdapter<D extends ViewBean> extends RecyclerView.Adapter<Vi
         }
     }
 
-
     @Keep
     public void addItem(D data, int position) {
         if (position > mDataList.size()) {
@@ -181,5 +192,4 @@ public class ViewBeanAdapter<D extends ViewBean> extends RecyclerView.Adapter<Vi
         mDataList.add(position, data);
         notifyItemInserted(position);
     }
-
 }

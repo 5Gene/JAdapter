@@ -25,7 +25,7 @@ import sparkj.adapter.custom.MediaSelectViewModel;
 import sparkj.adapter.face.OnMoreloadListener;
 import sparkj.adapter.face.OnViewBeanClickListener;
 import sparkj.adapter.face.OnViewClickListener;
-import sparkj.adapter.holder.ViewHolder;
+import sparkj.adapter.holder.ViewBeanHolder;
 import sparkj.adapter.vb.ViewBean;
 import sparkj.jadapter.R;
 
@@ -122,7 +122,7 @@ class DataTest extends ViewBean {
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, final int position, @Nullable List<Object> payloads, OnViewClickListener viewClickListener) {
+    public void onBindViewHolder(ViewBeanHolder holder, final int position, @Nullable List<Object> payloads, OnViewClickListener viewClickListener) {
         holder.setText(R.id.tv, position + "    " + text)
                 .setOnClickListener(new OnViewBeanClickListener() {
                     @Override
@@ -133,19 +133,19 @@ class DataTest extends ViewBean {
     }
 
     @Override
-    public void onViewDetachedFromWindow(@NonNull ViewHolder holder) {
+    public void onViewDetachedFromWindow(@NonNull ViewBeanHolder holder) {
         super.onViewDetachedFromWindow(holder);
         System.out.println("onViewDetachedFromWindow - " + getPosition() + " - " + holder);
     }
 
     @Override
-    public void onViewRecycled(@NonNull @NotNull ViewHolder holder) {
+    public void onViewRecycled(@NonNull @NotNull ViewBeanHolder holder) {
         super.onViewRecycled(holder);
         System.out.println("onViewRecycled - " + getPosition() + " - " + holder);
     }
 
     @Override
-    public void onViewAttachedToWindow(@NonNull @NotNull ViewHolder holder) {
+    public void onViewAttachedToWindow(@NonNull @NotNull ViewBeanHolder holder) {
         super.onViewAttachedToWindow(holder);
         System.out.println("onViewAttachedToWindow - " + getPosition() + " - " + holder);
     }

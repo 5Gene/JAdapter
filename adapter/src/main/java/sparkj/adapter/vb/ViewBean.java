@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import sparkj.adapter.face.IRecvDataDiff;
-import sparkj.adapter.holder.ViewHolder;
+import sparkj.adapter.holder.ViewBeanHolder;
 
 /**
  * @author yun.
@@ -34,16 +34,16 @@ public abstract class ViewBean implements IRecvDataDiff<ViewBean> {
     public abstract int bindLayout();
 
     @Override
-    public void onViewDetachedFromWindow(@NonNull ViewHolder holder) {
+    public void onViewDetachedFromWindow(@NonNull ViewBeanHolder holder) {
 
     }
 
     @Override
-    public void onViewAttachedToWindow(@NonNull ViewHolder holder) {
+    public void onViewAttachedToWindow(@NonNull ViewBeanHolder holder) {
 
     }
 
-    public void onViewRecycled(@NonNull ViewHolder holder) {
+    public void onViewRecycled(@NonNull ViewBeanHolder holder) {
 
     }
 

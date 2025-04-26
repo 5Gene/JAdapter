@@ -25,7 +25,7 @@ import androidx.recyclerview.widget.RecyclerView
 import sparkj.adapter.R
 import sparkj.adapter.ViewBeanAdapter
 import sparkj.adapter.face.OnViewClickListener
-import sparkj.adapter.holder.ViewHolder
+import sparkj.adapter.holder.ViewBeanHolder
 import sparkj.adapter.vb.ViewBean
 
 class MediaItem(val uri: Uri? = null) : ViewBean() {
@@ -50,7 +50,7 @@ class MediaItem(val uri: Uri? = null) : ViewBean() {
     override fun bindLayout() = R.layout.item_adapter_media
 
     override fun onBindViewHolder(
-        holder: ViewHolder,
+        holder: ViewBeanHolder,
         position: Int,
         payloads: List<Any?>?,
         viewClickListener: OnViewClickListener<*>?

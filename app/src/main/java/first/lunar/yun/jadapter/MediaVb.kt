@@ -1,7 +1,7 @@
 package first.lunar.yun.jadapter
 
 import sparkj.adapter.face.OnViewClickListener
-import sparkj.adapter.holder.ViewHolder
+import sparkj.adapter.holder.ViewBeanHolder
 import sparkj.adapter.vb.ViewBean
 
 class MediaVb: ViewBean() {
@@ -10,7 +10,7 @@ class MediaVb: ViewBean() {
     }
 
     override fun onBindViewHolder(
-        holder: ViewHolder?,
+        holder: ViewBeanHolder?,
         position: Int,
         payloads: List<Any?>?,
         viewClickListener: OnViewClickListener<*>?

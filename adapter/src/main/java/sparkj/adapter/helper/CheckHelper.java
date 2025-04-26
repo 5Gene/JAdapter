@@ -7,10 +7,16 @@ import android.os.Binder;
 import android.os.Build;
 import android.text.TextUtils;
 import android.view.View;
-import androidx.annotation.Keep;
-import sparkj.adapter.LApp;
 
-import java.util.*;
+import androidx.annotation.Keep;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+
+import sparkj.adapter.LApp;
 
 @Keep
 public class CheckHelper {
@@ -229,5 +235,21 @@ public class CheckHelper {
     public static boolean checkHasFlag(int orin, int flag){
         return ( orin&flag ) == flag;
     }
+
+    //resId >> 16：把 type id 和 package id挪到低位。
+    //& 0xFF：只保留 type id 部分。
+    public static boolean isLayoutId(int resId) {
+        int typeId = (resId >> 16) & 0xFF;
+        //0x01 -> drawable
+        //0x02 -> layout
+        //0x03 -> anim
+        //0x04 -> animator
+        //0x05 -> color
+        //0x06 -> menu
+        //0x07 -> raw
+        //0x08 -> string
+        return typeId == 0x02; // 0x02一般对应layout
+    }
+
 }
 

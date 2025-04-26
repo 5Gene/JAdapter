@@ -25,7 +25,7 @@ import sparkj.adapter.helper.LLog;
 import sparkj.adapter.holder.BaseLoadMoreBinder;
 import sparkj.adapter.holder.DefaultLoadMoreBinder;
 import sparkj.adapter.holder.JRecvBaseBinder;
-import sparkj.adapter.holder.ViewHolder;
+import sparkj.adapter.holder.ViewBeanHolder;
 
 
 /**
@@ -34,7 +34,7 @@ import sparkj.adapter.holder.ViewHolder;
  */
 public class LoadMoreWrapperAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements OnViewClickListener {
 
-  public ViewHolder mLoadMoreHolder;
+  public ViewBeanHolder mLoadMoreHolder;
   int NEED_UP2LOAD_MORE = 1;
   /**
    * 底部loadingholder永远都在
@@ -281,7 +281,7 @@ public class LoadMoreWrapperAdapter<T> extends RecyclerView.Adapter<RecyclerView
         mLoadingBinder = onCreateLoadmoreBinder(parent);
         if (mLoadingBinder == null) {
           mLoadingBinder = new DefaultLoadMoreBinder(this);
-          mLoadMoreHolder = (ViewHolder) mLoadingBinder.onCreateViewHolder(inflater, parent);
+          mLoadMoreHolder = (ViewBeanHolder) mLoadingBinder.onCreateViewHolder(inflater, parent);
           getLoadMoreStateBean();
         }
       }
@@ -617,7 +617,7 @@ public class LoadMoreWrapperAdapter<T> extends RecyclerView.Adapter<RecyclerView
   }
 
   @Keep
-  public ViewHolder getLoadingHolder() {
+  public ViewBeanHolder getLoadingHolder() {
     return mLoadMoreHolder;
   }
 

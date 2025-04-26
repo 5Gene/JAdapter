@@ -26,11 +26,11 @@ import sparkj.adapter.vb.ViewBean;
  * @since [https://github.com/mychoices]
  * <p><a href="https://github.com/mychoices">github</a>
  */
-public class ViewHolder extends RecyclerView.ViewHolder {
+public class ViewBeanHolder extends RecyclerView.ViewHolder {
   private static final int NO_COLOR = -19910113;
   private static final int JVIEW_TAG = 0x20190601;
   private final SparseArray<WeakReference<View>> mCacheViews;
-  private String tag = ViewHolder.class.getSimpleName();
+  private String tag = ViewBeanHolder.class.getSimpleName();
   public static final String TAG_LOADING = "loadingholder";
   private final WeakReference<Activity> mActivityWeakReference;
   private ViewBean mHoldVBean;
@@ -48,7 +48,7 @@ public class ViewHolder extends RecyclerView.ViewHolder {
   private Object extra;
 
   @Keep
-  public ViewHolder(View itemView) {
+  public ViewBeanHolder(View itemView) {
     super(itemView);
     if (LApp.getContext() == null) {
       LApp.fly(itemView.getContext().getApplicationContext());
@@ -93,12 +93,12 @@ public class ViewHolder extends RecyclerView.ViewHolder {
   }
 
   @Keep
-  public ViewHolder setText(int viewId, CharSequence text) {
+  public ViewBeanHolder setText(int viewId, CharSequence text) {
     return setText(viewId, text, NO_COLOR);
   }
 
   @Keep
-  public ViewHolder setText(int viewId, CharSequence text, int colorRes) {
+  public ViewBeanHolder setText(int viewId, CharSequence text, int colorRes) {
     TextView textView = getView(viewId);
     if (!TextUtils.isEmpty(text)) {
       textView.setVisibility(View.VISIBLE);
@@ -117,7 +117,7 @@ public class ViewHolder extends RecyclerView.ViewHolder {
    * @return
    */
   @Keep
-  public ViewHolder setText2(int viewId, CharSequence text) {
+  public ViewBeanHolder setText2(int viewId, CharSequence text) {
     return setText2(viewId, text, NO_COLOR);
   }
 
@@ -129,7 +129,7 @@ public class ViewHolder extends RecyclerView.ViewHolder {
    * @return
    */
   @Keep
-  public ViewHolder setText2(int viewId, CharSequence text, @ColorInt int color) {
+  public ViewBeanHolder setText2(int viewId, CharSequence text, @ColorInt int color) {
     TextView textView = getView(viewId);
     if (!TextUtils.isEmpty(text)) {
       textView.setVisibility(View.VISIBLE);
@@ -144,7 +144,7 @@ public class ViewHolder extends RecyclerView.ViewHolder {
   }
 
   @Keep
-  public ViewHolder setText(int viewId, int strRes, int colorRes) {
+  public ViewBeanHolder setText(int viewId, int strRes, int colorRes) {
     TextView textView = getView(viewId);
 //    if (textView != null) { //不判断空 好知道是否写错了ID
     String text = textView.getContext().getResources().getString(strRes);
@@ -161,12 +161,12 @@ public class ViewHolder extends RecyclerView.ViewHolder {
 
 
   @Keep
-  public ViewHolder setText(int viewId, int strRes) {
+  public ViewBeanHolder setText(int viewId, int strRes) {
     return setText(viewId, strRes, NO_COLOR);
   }
 
   @Keep
-  public ViewHolder setVisibility(int visibility, int... viewIds) {
+  public ViewBeanHolder setVisibility(int visibility, int... viewIds) {
     for (int viewId : viewIds) {
       View view = getView(viewId);
       if (view != null) {
@@ -177,7 +177,7 @@ public class ViewHolder extends RecyclerView.ViewHolder {
   }
 
   @Keep
-  public ViewHolder goneViews(int... viewIds) {
+  public ViewBeanHolder goneViews(int... viewIds) {
 //    for (int i : viewIds) {
 //      View view = getView(i);
 //      if (view!=null) {
@@ -188,7 +188,7 @@ public class ViewHolder extends RecyclerView.ViewHolder {
   }
 
   @Keep
-  public ViewHolder visibleViews(int... viewIds) {
+  public ViewBeanHolder visibleViews(int... viewIds) {
 //    for (int i : viewIds) {
 //      View view = getView(i);
 //      if (view!=null) {
@@ -211,7 +211,7 @@ public class ViewHolder extends RecyclerView.ViewHolder {
    * 为ImageView设置图片
    */
   @Keep
-  public ViewHolder setImageResource(int viewId, int drawableId) {
+  public ViewBeanHolder setImageResource(int viewId, int drawableId) {
     ImageView view = getView(viewId);
     view.setImageResource(drawableId);
     return this;
@@ -221,14 +221,14 @@ public class ViewHolder extends RecyclerView.ViewHolder {
    * 为ImageView设置图片
    */
   @Keep
-  public ViewHolder setImageBitmap(int viewId, Bitmap bm) {
+  public ViewBeanHolder setImageBitmap(int viewId, Bitmap bm) {
     ImageView view = getView(viewId);
     view.setImageBitmap(bm);
     return this;
   }
 
   @Keep
-  public ViewHolder setOnLongClickListener(int viewId, View.OnLongClickListener l) {
+  public ViewBeanHolder setOnLongClickListener(int viewId, View.OnLongClickListener l) {
     View view = getView(viewId);
     if (view != null) {
       view.setOnLongClickListener(l);
@@ -237,7 +237,7 @@ public class ViewHolder extends RecyclerView.ViewHolder {
   }
 
   @Keep
-  public ViewHolder setOnClickListener(View.OnClickListener l, int... viewIds) {
+  public ViewBeanHolder setOnClickListener(View.OnClickListener l, int... viewIds) {
     for (int viewId : viewIds) {
       getView(viewId).setOnClickListener(l);
     }
@@ -245,13 +245,13 @@ public class ViewHolder extends RecyclerView.ViewHolder {
   }
 
   @Keep
-  public ViewHolder setOnClickListener(View.OnClickListener l) {
+  public ViewBeanHolder setOnClickListener(View.OnClickListener l) {
     this.itemView.setOnClickListener(l);
     return this;
   }
 
   @Keep
-  public ViewHolder setOnLongclickListener(View.OnLongClickListener l) {
+  public ViewBeanHolder setOnLongclickListener(View.OnLongClickListener l) {
     this.itemView.setOnLongClickListener(l);
     return this;
   }

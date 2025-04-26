@@ -21,7 +21,7 @@ import sparkj.adapter.face.OnViewClickListener;
  */
 public class DefaultLoadMoreBinder extends BaseLoadMoreBinder<BaseLoadMoreBinder.LoadMoreState> {
 
-  public ViewHolder mLoadMoreHolder;
+  public ViewBeanHolder mLoadMoreHolder;
   private OnViewClickListener mViewClickListener;
   private CharSequence mNomoreLoadTipsIfneed = "=== 我是有底线的 ===";
 
@@ -53,8 +53,8 @@ public class DefaultLoadMoreBinder extends BaseLoadMoreBinder<BaseLoadMoreBinder
 
   @NonNull
   @Override
-  public ViewHolder onCreateViewHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
-    mLoadMoreHolder = new ViewHolder(
+  public ViewBeanHolder onCreateViewHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
+    mLoadMoreHolder = new ViewBeanHolder(
         mRootView = inflater.inflate(R.layout.default_recyc_loading_more, parent, false));
     rootViewLoadingTag(FOOT_STATE_LOAD_NOMORE);//holder处于 loadmore状态
     mLoadMoreHolder.itemView.setOnClickListener(new OnViewBeanClickListener() {

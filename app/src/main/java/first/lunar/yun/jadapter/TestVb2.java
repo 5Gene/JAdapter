@@ -9,7 +9,7 @@ import java.util.List;
 
 import sparkj.adapter.face.OnViewBeanClickListener;
 import sparkj.adapter.face.OnViewClickListener;
-import sparkj.adapter.holder.ViewHolder;
+import sparkj.adapter.holder.ViewBeanHolder;
 import sparkj.adapter.vb.ViewBean;
 import sparkj.jadapter.R;
 
@@ -29,7 +29,7 @@ public class TestVb2 extends ViewBean {
   }
 
   @Override
-  public void onBindViewHolder(ViewHolder holder, final int position, @Nullable List<Object> payloads, OnViewClickListener viewClickListener) {
+  public void onBindViewHolder(ViewBeanHolder holder, final int position, @Nullable List<Object> payloads, OnViewClickListener viewClickListener) {
     holder.setText(R.id.tv, position + "    " + text)
         .setOnClickListener(new OnViewBeanClickListener() {
           @Override
