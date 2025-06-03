@@ -64,7 +64,8 @@ public class ViewBeanAdapter<D extends ViewBean> extends RecyclerView.Adapter<Vi
         //24-31 | package id（一般是 0x7f）
         //16-23 | type id（资源类型，比如 layout, drawable, string）
         //0-15 | entry id（资源的具体项编号）
-        if (CheckHelper.isLayoutId(itemLayout)) {
+//        if (CheckHelper.isLayoutId(itemLayout)) {
+        if (itemLayout > 0) {
             return new ViewBeanHolder(LayoutInflater.from(viewGroup.getContext()).inflate(itemLayout, viewGroup, false));
         } else {
             LinearLayout linearLayout = new LinearLayout(viewGroup.getContext());

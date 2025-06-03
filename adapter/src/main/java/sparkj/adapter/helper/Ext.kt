@@ -8,12 +8,13 @@ import sparkj.adapter.ViewBeanAdapter
 import sparkj.adapter.face.OnViewClickListener
 import sparkj.adapter.holder.ViewBeanHolder
 import sparkj.adapter.vb.ViewBean
+import kotlin.math.absoluteValue
 
 abstract class ViewDslBean : ViewBean() {
 
-    override fun bindLayout() = this::class.hashCode()
+    final override fun bindLayout() = this.hashCode().absoluteValue * -1
 
-    override fun onBindViewHolder(
+    final override fun onBindViewHolder(
         holder: ViewBeanHolder,
         position: Int,
         payloads: List<Any?>?,
