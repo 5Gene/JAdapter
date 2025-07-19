@@ -26,17 +26,17 @@ class GridLayoutDecoration(val verticalOffset: Int) : RecyclerView.ItemDecoratio
         val eachWidth = parent.measuredWidth / spanCount
         view.measure(parent.measuredWidth, parent.measuredHeight)
         val rowIndex = index % spanCount
-        if (rowIndex == 0) {
-            outRect.left = 0
-            outRect.right = eachWidth - view.measuredWidth/2
-        } else if (rowIndex == spanCount - 1) {
-            outRect.right = 0
-            outRect.left = eachWidth - view.measuredWidth/2
+        val is3Span = spanCount == 3
+        if (is3Span) {
+            if (rowIndex == 0) {
+                outRect.right = eachWidth - view.measuredWidth
+            } else if (rowIndex == spanCount - 1) {
+                outRect.left = eachWidth - view.measuredWidth
+            }
         } else {
             outRect.right = eachWidth - view.measuredWidth / 2
             outRect.left = eachWidth - view.measuredWidth / 2
         }
-
         val columnIndex = index / spanCount
         if (columnIndex == 0) {
             outRect.top = verticalOffset
