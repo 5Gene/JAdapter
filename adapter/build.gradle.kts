@@ -33,4 +33,5 @@ publishAndroidMavenCentral("adapter")
 dependencies {
     api(vcl.androidx.recyclerview)
     api(vcl.androidx.appcompat)
+    api(vcl.androidx.transition.ktx)
 }

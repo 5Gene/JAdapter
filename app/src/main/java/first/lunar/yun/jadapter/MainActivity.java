@@ -69,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements OnViewClickListen
 
     @Override
     public void onup2LoadingMore() {
+        mRecyclerView.setLayoutTransition();
         mRecyclerView.postDelayed(new Runnable() {
             @Override
             public void run() {

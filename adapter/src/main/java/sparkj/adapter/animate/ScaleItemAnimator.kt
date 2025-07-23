@@ -3,6 +3,10 @@ package sparkj.adapter.animate
 import android.view.ViewPropertyAnimator
 import androidx.recyclerview.widget.RecyclerView
 
+//另一种给recycleView添加动画的方式
+//LayoutAnimationController animation = AnimationUtils.loadLayoutAnimation(this, resId);
+//recyclerView.setLayoutAnimation(animation);
+//https://www.geeksforgeeks.org/android/how-to-animate-recyclerview-items-in-android/
 class ScaleItemAnimator : MyDefaultItemAnimator() {
     override fun animateAdd(holder: RecyclerView.ViewHolder): Boolean {
         holder.itemView.scaleX = 0F
