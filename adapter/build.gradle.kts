@@ -1,4 +1,5 @@
 import june.wing.GroupIdMavenCentral
+import june.wing.beijingTimeVersion
 import june.wing.publishAndroidMavenCentral
 
 plugins {
@@ -7,7 +8,7 @@ plugins {
 }
 
 group = GroupIdMavenCentral
-version = libs.versions.gene.adapter.get()
+version = beijingTimeVersion
 
 android {
     namespace = "sparkj.adapter"
