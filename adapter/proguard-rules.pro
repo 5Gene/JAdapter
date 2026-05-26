@@ -23,3 +23,11 @@
 -obfuscationdictionary proguard-tradition.txt
 -packageobfuscationdictionary proguard-tradition.txt
 -classobfuscationdictionary proguard-tradition.txt
+
+# ============================================
+# 将 library 的所有代码混淆到统一包名下
+# ============================================
+
+# 将所有混淆后的类都放到同一个包下
+-repackageclasses 'osp.adapter'
+#-flattenpackagehierarchy 'osp.adapter'
